@@ -1,0 +1,41 @@
+version: "2"
+
+name: Airdrop 1stsample Snapin
+description: Airdrop 1stsample Snapin
+
+service_account:
+  display_name: Airdrop 1stsample Snapin Bot
+
+functions:
+  - name: extraction
+    description: Extraction function for Airdrop 1stsample Snapin
+  - name: install_initial_domain_mapping
+    description: Create blueprint and install initial domain mapping
+
+keyring_types:
+  - id: example-connection
+    name: Example Connection
+    description: Example Connection
+    kind: "Secret"
+    is_subdomain: true
+    secret_config:
+      secret_transform: ".token" # a JQ query
+      fields:
+        - id: token
+          name: Token
+          description: Example API token
+      token_verification:
+        urL: https://app.devrev.ai/favicon.ico
+        method: GET
+
+imports:
+  - slug: airdrop-1stsample-snapin
+    display_name: Airdrop 1stsample Snapin
+    description: Airdrop 1stsample Snapin
+    extractor_function: extraction
+    allowed_connection_types:
+      - example-connection
+
+hooks:
+  - type: activate
+    function: install_initial_domain_mapping
